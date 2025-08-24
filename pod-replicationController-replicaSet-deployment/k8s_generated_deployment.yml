@@ -1,0 +1,20 @@
+# kubectl create deployment nginx-new --image=nginx:1.25-alpine --dry-run=client -o yaml > deploy.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-new
+  name: nginx-new
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-new
+  template:
+    metadata:
+      labels:
+        app: nginx-new
+    spec:
+      containers:
+      - image: nginx:1.25-alpine
+        name: nginx
