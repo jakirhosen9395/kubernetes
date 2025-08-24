@@ -216,64 +216,6 @@ spec:
         - containerPort: 80
 ```
 
-### 🚀 Production-Ready Deployment (optional, safer strategy, probes, resources)
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deploy
-  labels:
-    app: nginx
-    env: demo
-spec:
-  replicas: 3
-  revisionHistoryLimit: 5
-  progressDeadlineSeconds: 120
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-  selector:
-    matchLabels:
-      app: nginx
-      env: demo
-  template:
-    metadata:
-      labels:
-        app: nginx
-        env: demo
-    spec:
-      terminationGracePeriodSeconds: 30
-      containers:
-      - name: nginx-container
-        image: nginx:1.25-alpine
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "128Mi"
-          limits:
-            cpu: "500m"
-            memory: "256Mi"
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 3
-          periodSeconds: 5
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 3
-```
-
 ### Minimal generated Deployment (`deploy.yml`)
 এই ফাইলটি সাধারণত CLI দিয়ে জেনারেট করা হয়:
 ```bash
@@ -282,7 +224,7 @@ kubectl create deployment nginx-new --image=nginx:1.25-alpine --dry-run=client -
 
 ---
 
-## Command Cheat Sheet
+# Command Cheat Sheet
 
 ### Global & Navigation
 | Command | ব্যাখ্যা |
