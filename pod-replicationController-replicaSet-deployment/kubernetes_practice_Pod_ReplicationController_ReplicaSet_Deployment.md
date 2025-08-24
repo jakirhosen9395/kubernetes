@@ -90,7 +90,7 @@ spec:
 |---------|----------|
 | `kubectl apply -f pod.yaml` | Pod তৈরি/আপডেট |
 | `kubectl get pods -o wide` | Pod + কোন Node-এ চলছে |
-| `kubectl describe pod declarative-pod-nginx` | Pod-এর বিস্তারিত |
+| `kubectl describe pod pod.yaml` | Pod-এর বিস্তারিত |
 | `kubectl logs <pod-name>` | কন্টেইনার লগ |
 | `kubectl exec -it <pod-name> -- /bin/sh` | কন্টেইনার শেলে ঢোকা |
 | `kubectl port-forward pod/<pod-name> 8080:80` | লোকাল 8080 → Pod 80 |
