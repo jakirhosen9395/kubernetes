@@ -252,7 +252,7 @@ cilium status
 ডিফল্টে master node এ workload schedule হয় না। চাইলে master node এ pod চালানো যাবে।
 
 ```bash
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
 **কেন দরকার:** ছোট cluster এ resources কম থাকে, তাই master node এ workload চালাতে হলে taint remove করতে হয়।  
