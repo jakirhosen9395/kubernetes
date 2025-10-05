@@ -47,36 +47,7 @@ Output এ `Swap` এর মান **0B** হতে হবে।
 
 ---
 
-## Step 3: Container Runtime (containerd) ইনস্টল করা
-Kubernetes container চালাতে runtime ব্যবহার করে। এখানে containerd ব্যবহার করা হচ্ছে।
-
-```bash
-# সিস্টেম update
-sudo apt update && sudo apt upgrade -y
-
-# containerd ইনস্টল
-sudo apt install -y containerd
-
-# containerd config তৈরি + systemd cgroup enable + pause image fix
-sudo mkdir -p /etc/containerd
-containerd config default | sed 's/SystemdCgroup = false/SystemdCgroup = true/' | sed 's|sandbox_image = ".*"|sandbox_image = "registry.k8s.io/pause:3.10"|' | sudo tee /etc/containerd/config.toml > /dev/null
-
-# containerd restart এবং enable
-sudo systemctl restart containerd
-sudo systemctl enable containerd
-```
-
-**কেন দরকার:** Kubernetes নিজে container run করতে পারে না, container runtime লাগে। containerd official runtime হিসেবে সমর্থিত।  
-**কাজ কী করে:** containerd install করে এবং systemd driver configure করে, যা kubelet এর সাথে compatible।  
-**চেক করার উপায়:**  
-```bash
-systemctl status containerd
-```
-Output এ `Active: active (running)` দেখাবে।  
-
----
-
-## Step 4: Kernel Modules এবং Sysctl কনফিগার করা
+## Step 3: Kernel Modules এবং Sysctl কনফিগার করা
 Pod networking এর জন্য Linux kernel-এ কিছু সেটআপ করতে হয়।
 
 ```bash
@@ -113,6 +84,36 @@ sysctl net.ipv4.ip_forward
 ```
 - `br_netfilter` module লোড হয়েছে কিনা দেখতে হবে।  
 - `net.ipv4.ip_forward` এর মান **1** হতে হবে।  
+
+---
+
+
+## Step 4: Container Runtime (containerd) ইনস্টল করা
+Kubernetes container চালাতে runtime ব্যবহার করে। এখানে containerd ব্যবহার করা হচ্ছে।
+
+```bash
+# সিস্টেম update
+sudo apt update && sudo apt upgrade -y
+
+# containerd ইনস্টল
+sudo apt install -y containerd
+
+# containerd config তৈরি + systemd cgroup enable + pause image fix
+sudo mkdir -p /etc/containerd
+containerd config default | sed 's/SystemdCgroup = false/SystemdCgroup = true/' | sed 's|sandbox_image = ".*"|sandbox_image = "registry.k8s.io/pause:3.10"|' | sudo tee /etc/containerd/config.toml > /dev/null
+
+# containerd restart এবং enable
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+```
+
+**কেন দরকার:** Kubernetes নিজে container run করতে পারে না, container runtime লাগে। containerd official runtime হিসেবে সমর্থিত।  
+**কাজ কী করে:** containerd install করে এবং systemd driver configure করে, যা kubelet এর সাথে compatible।  
+**চেক করার উপায়:**  
+```bash
+systemctl status containerd
+```
+Output এ `Active: active (running)` দেখাবে।  
 
 ---
 
