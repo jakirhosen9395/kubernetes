@@ -132,6 +132,7 @@ Ubuntu/Debian default repo তে Kubernetes এর সর্বশেষ versio
 
 ```bash
 # প্রয়োজনীয় প্যাকেজ ইনস্টল
+sudo apt update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 
 # GPG keyrings directory তৈরি
