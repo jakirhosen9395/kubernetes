@@ -35,6 +35,9 @@ sudo swapoff -a
 
 # Swap স্থায়ীভাবে বন্ধ (fstab ফাইলে swap entry comment করা)
 sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
+
+# Reboot machine
+sudo init 6
 ```
 
 **কেন দরকার:** kubelet memory stability এর জন্য swap support করে না।  
