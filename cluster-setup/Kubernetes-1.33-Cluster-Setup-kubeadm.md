@@ -11,9 +11,13 @@
 প্রতিটি নোডকে একটি **unique নাম** দিতে হবে, যাতে cluster সহজে node গুলো আলাদা করে চিনতে পারে।
 
 ```bash
-sudo hostnamectl set-hostname master-node    # Master node এর জন্য
-# sudo hostnamectl set-hostname worker-1     # Worker node 1 এর জন্য
-# sudo hostnamectl set-hostname worker-2     # Worker node 2 এর জন্য
+# Master node এর জন্য
+sudo hostnamectl set-hostname master-node
+
+# Worker node 1 এর জন্য
+sudo hostnamectl set-hostname worker-1
+# Worker node 2 এর জন্য
+sudo hostnamectl set-hostname worker-2     
 ```
 
 **কেন দরকার:** Cluster-এর মধ্যে node identify করার জন্য। IP দিয়েও সম্ভব, কিন্তু hostname ব্যবহার করলে manage করা সহজ।  
