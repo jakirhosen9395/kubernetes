@@ -16,6 +16,7 @@ sudo hostnamectl set-hostname master-node
 
 # Worker node 1 এর জন্য
 sudo hostnamectl set-hostname worker-1
+
 # Worker node 2 এর জন্য
 sudo hostnamectl set-hostname worker-2     
 ```
