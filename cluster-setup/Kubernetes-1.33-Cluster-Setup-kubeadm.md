@@ -110,6 +110,8 @@ sudo apt install -y containerd
 sudo mkdir -p /etc/containerd
 containerd config default | sed 's/SystemdCgroup = false/SystemdCgroup = true/' | sed 's|sandbox_image = ".*"|sandbox_image = "registry.k8s.io/pause:3.10"|' | sudo tee /etc/containerd/config.toml > /dev/null
 
+sudo cat /etc/containerd/config.toml
+
 # containerd restart এবং enable
 sudo systemctl restart containerd
 sudo systemctl enable containerd
