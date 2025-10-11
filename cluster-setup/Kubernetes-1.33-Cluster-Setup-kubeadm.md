@@ -203,7 +203,24 @@ systemctl status kubelet
 ip addr show
 
 # Cluster initialize করো (তোমার master IP বসাও)
+#chose:1
 sudo kubeadm init --apiserver-advertise-address=<YOUR_MASTER_IP> --pod-network-cidr=10.244.0.0/16
+
+#chose:1
+sudo kubeadm init \
+  --apiserver-advertise-address=$MASTER_IP \
+  --pod-network-cidr=10.244.0.0/16 \
+  --cri-socket /run/containerd/containerd.sock
+
+sudo kubeadm init \
+ --apiserver-advertise-address=$MASTER_IP \
+ --pod-network-cidr=10.244.0.0/16 \
+ --cri-socket /run/containerd/containerd.sock | tee kubeadm-init.log
+
+grep -A1 "kubeadm join" kubeadm-init.log > join-command.sh
+chmod +x join-command.sh
+cat join-command.sh
+
 ```
 
 **কেন দরকার:** Cluster শুরু করার জন্য control plane তৈরি করতে হবে (API server, etcd, scheduler, controller-manager)।  
