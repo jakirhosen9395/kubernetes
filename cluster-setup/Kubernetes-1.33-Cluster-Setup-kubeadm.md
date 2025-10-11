@@ -195,37 +195,50 @@ systemctl status kubelet
 
 ---
 
-## Step 7: Cluster Initialize করা
-প্রথমে master node এর IP address বের করতে হবে, তারপর cluster initialize করতে হবে।
+Option 1: Default kubeadm init (Docker/Containerd)
 
-```bash
+এটা হলো সবচেয়ে সাধারণ setup — containerd runtime ব্যবহার করলে (default in most systems)।
+
 # Master node এর IP address বের করো
 ip addr show
 
-# Cluster initialize করো (তোমার master IP বসাও)
-#chose:1
-sudo kubeadm init --apiserver-advertise-address=<YOUR_MASTER_IP> --pod-network-cidr=10.244.0.0/16
+# Master IP environment variable এ রাখো
+export MASTER_IP=<YOUR_MASTER_IP>
 
-#chose:1
+# Cluster initialize করো
 sudo kubeadm init \
   --apiserver-advertise-address=$MASTER_IP \
   --pod-network-cidr=10.244.0.0/16 \
-  --cri-socket /run/containerd/containerd.sock
+  --cri-socket /run/containerd/containerd.sock | tee kubeadm-init.log
 
-sudo kubeadm init \
- --apiserver-advertise-address=$MASTER_IP \
- --pod-network-cidr=10.244.0.0/16 \
- --cri-socket /run/containerd/containerd.sock | tee kubeadm-init.log
-
+# Worker join command বের করো
 grep -A1 "kubeadm join" kubeadm-init.log > join-command.sh
 chmod +x join-command.sh
 cat join-command.sh
 
-```
+⚙️ Option 2: Simplified version (for Docker runtime or lab setup)
 
-**কেন দরকার:** Cluster শুরু করার জন্য control plane তৈরি করতে হবে (API server, etcd, scheduler, controller-manager)।  
-**কাজ কী করে:** এই কমান্ড master node কে control-plane বানিয়ে দেয়।  
-**চেক করার উপায়:** Output এ একটি **kubeadm join command** আসবে। সেটি worker node এ ব্যবহার করতে হবে।  
+এইটা একটু lightweight, যেটা test বা small lab cluster এর জন্য ভালো।
+
+# Master node এর IP address বের করো
+ip addr show
+
+# Cluster initialize করো (IP manually বসাও)
+sudo kubeadm init \
+  --apiserver-advertise-address=<YOUR_MASTER_IP> \
+  --pod-network-cidr=10.244.0.0/16
+
+
+নোট:
+এই ভার্সনে --cri-socket flag লাগে না, কারণ Docker runtime kubeadm নিজেই detect করে নেয়।
+
+🧾 Output সংগ্রহ করো
+
+যে version ই চালাও না কেন, শেষে নিচেরটা চালাও join command আলাদা করার জন্য:
+
+grep -A1 "kubeadm join" kubeadm-init.log > join-command.sh
+chmod +x join-command.sh
+cat join-command.sh
 
 ---
 
